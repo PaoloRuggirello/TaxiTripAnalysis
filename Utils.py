@@ -2,8 +2,6 @@ import json
 import argparse
 from datetime import datetime
 
-DATE_FORMAT = '%d/%m/%Y %H:%M'
-
 
 def initializeParser():
     parser = argparse.ArgumentParser()
@@ -19,20 +17,6 @@ def initializeParser():
                         type=str,
                         default='.json')
     return parser.parse_args()
-
-
-def readJsonFile(completeFilePath):
-    try:
-        jsonFile = open(completeFilePath)
-        data = json.load(jsonFile)  # This is a list of lists
-        jsonFile.close()
-        return data
-    except OSError as e:
-        print(e)
-        exit()
-    except json.JSONDecodeError:
-        print('Error! The specified input file doesn\'t contains info in json format.')
-        exit()
 
 
 def saveJsonFile(filePath, dumpData, indent=3):
@@ -51,6 +35,10 @@ def getYearFromParser(year):
     except:
         print('Error! Bad format for \'year\' parameter.')
         exit()
+
+
+def generateFileName(year, month):
+    return 'yellow_tripdata_' + str(year).zfill(4) + '-' + str(month).zfill(2) + '.csv'
 
 
 def getMonthFromParser(month):
