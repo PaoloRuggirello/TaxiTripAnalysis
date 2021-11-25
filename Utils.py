@@ -1,5 +1,6 @@
 import json
 import argparse
+import pandas as pd
 from datetime import datetime
 
 
@@ -56,3 +57,10 @@ def getMonthFromParser(month):
             print('Error! Month format not recognized.')
             exit()
     return month
+
+
+def readCsv(fileName):
+    try:
+        return pd.read_csv('source-data/'+fileName)
+    except:
+        print('Data-source not found for given dates.')
