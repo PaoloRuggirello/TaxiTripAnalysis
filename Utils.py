@@ -3,6 +3,15 @@ import argparse
 import pandas as pd
 from datetime import datetime
 
+PAYMENTS_TYPE_DICTIONARY = {
+        1: 'Credit card',
+        2: 'Cash',
+        3: 'No charge',
+        4: 'Dispute',
+        5: 'Unknown',
+        6: 'Voided trip'
+}
+
 
 def initializeParser():
     parser = argparse.ArgumentParser()
@@ -61,6 +70,9 @@ def getMonthFromParser(month):
 
 def readCsv(fileName):
     try:
-        return pd.read_csv('source-data/'+fileName)
-    except:
-        print('Data-source not found for given dates.')
+        yellow_taxi_tripdata = pd.read_csv('source-data/'+fileName, usecols=['payment_type', 'DOLocationID'])
+        lookup_table = pd.read_csv('source-data/taxi+_zone_lookup.csv', usecols=['LocationID', 'Borough'])  #TODO: manage possible dynamic file location and name
+        return pd.merge(yellow_taxi_tripdata, lookup_table, left_on='DOLocationID', right_on='LocationID')
+    except Exception as execption:
+        # print('Data-source not found for given dates.')
+        print(execption)
