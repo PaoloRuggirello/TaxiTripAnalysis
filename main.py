@@ -1,18 +1,20 @@
 import Utils
 import time
+from queue import Queue
+from FeatureExtractor import FeatureExtractor
 
 if __name__ == '__main__':
     start = time.time()
     args = Utils.initializeParser()
     year = Utils.getYearFromParser(args.year)
-    months = Utils.getMonthToAnalizeFromParser(args.month)
+    months = Utils.getMonthToAnalyzeFromParser(args.month)
     fileNames = Utils.generateFileNames(year, months)
+    queue = Queue()
     for fileName in fileNames:
-        taxi_trip_dataframe = Utils.readCsv(fileName, (args.month is not None))
-        if taxi_trip_dataframe is not None:
-            payments_type = taxi_trip_dataframe.groupby(['payment_type']).size()
-            most_common_pt = payments_type.idxmax()
-            less_common_pt = payments_type.idxmin()
+        extractor = FeatureExtractor(queue)
+        extractor.start()
+        queue.put((fileName, args.month is not None))
+    queue.join()
     end = time.time()
     print("Time : ", (end-start))
     #

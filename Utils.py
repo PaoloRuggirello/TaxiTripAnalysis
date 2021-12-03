@@ -50,7 +50,7 @@ def generateFileNames(year, months):
     return ['yellow_tripdata_' + str(year).zfill(4) + '-' + str(m).zfill(2) + '.csv' for m in months]
 
 
-def getMonthToAnalizeFromParser(month):
+def getMonthToAnalyzeFromParser(month):
     if month is not None:
         try:
             stringSize = len(month)
@@ -65,17 +65,3 @@ def getMonthToAnalizeFromParser(month):
             print('Error! Month format not recognized.')
             exit()
     return list(range(1, 13))
-
-
-def readCsv(fileName, raiseException):
-    try:
-        yellow_taxi_tripdata = pd.read_csv('source-data/' + fileName, usecols=['payment_type', 'DOLocationID'])
-        lookup_table = pd.read_csv('source-data/taxi+_zone_lookup.csv', usecols=['LocationID',
-                                                                                 'Borough'])  # TODO: manage possible dynamic file location and name
-        return pd.merge(yellow_taxi_tripdata, lookup_table, left_on='DOLocationID', right_on='LocationID')
-    except:
-        if raiseException:
-            print('Data-source not found for given dates.')
-            exit()
-        else:
-            return None
