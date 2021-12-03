@@ -67,13 +67,15 @@ def getMonthToAnalizeFromParser(month):
     return list(range(1, 13))
 
 
-def readCsv(fileName):
+def readCsv(fileName, raiseException):
     try:
         yellow_taxi_tripdata = pd.read_csv('source-data/' + fileName, usecols=['payment_type', 'DOLocationID'])
         lookup_table = pd.read_csv('source-data/taxi+_zone_lookup.csv', usecols=['LocationID',
                                                                                  'Borough'])  # TODO: manage possible dynamic file location and name
         return pd.merge(yellow_taxi_tripdata, lookup_table, left_on='DOLocationID', right_on='LocationID')
-    except Exception as execption:
-        print('Data-source not found for given dates.')
-        exit()
-        # print(execption)
+    except:
+        if raiseException:
+            print('Data-source not found for given dates.')
+            exit()
+        else:
+            return None
