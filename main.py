@@ -2,6 +2,17 @@ import Utils
 import time
 from queue import Queue
 from FeatureExtractor import FeatureExtractor
+from Result import Result
+
+
+def startFeatureExtractors(finalResult):
+    queue = Queue()
+    for fileName in fileNames:
+        extractor = FeatureExtractor(queue)
+        extractor.start()
+        queue.put((fileName, args.month is not None, finalResult))
+    queue.join()
+
 
 if __name__ == '__main__':
     start = time.time()
@@ -9,12 +20,12 @@ if __name__ == '__main__':
     year = Utils.getYearFromParser(args.year)
     months = Utils.getMonthToAnalyzeFromParser(args.month)
     fileNames = Utils.generateFileNames(year, months)
-    queue = Queue()
-    for fileName in fileNames:
-        extractor = FeatureExtractor(queue)
-        extractor.start()
-        queue.put((fileName, args.month is not None))
-    queue.join()
+    result = Result()
+    startFeatureExtractors(result)
+
+    # print('Most common: ', max(result.result, key=result.result.get))
+    # print('Less common: ', min(result.result, key=result.result.get))
+    print(result.result)
     end = time.time()
     print("Time : ", (end-start))
     #

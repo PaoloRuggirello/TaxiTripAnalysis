@@ -1,6 +1,5 @@
 import json
 import argparse
-import pandas as pd
 from datetime import datetime
 
 PAYMENTS_TYPE_DICTIONARY = {

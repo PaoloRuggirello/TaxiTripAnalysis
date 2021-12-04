@@ -3,12 +3,12 @@ import pandas as pd
 
 
 class FeatureExtractor(Thread):
+
     def __init__(self, queue):
         Thread.__init__(self)
         self.queue = queue
 
-
-    def readCsv(self, fileName, raiseException):
+    def read_csv(self, fileName, raiseException):
         try:
             yellow_taxi_tripdata = pd.read_csv('source-data/' + fileName, usecols=['payment_type', 'DOLocationID'])
             lookup_table = pd.read_csv('source-data/taxi+_zone_lookup.csv', usecols=['LocationID',
@@ -21,13 +21,13 @@ class FeatureExtractor(Thread):
             else:
                 return None
 
-
     def run(self):
-        fileName, raiseException = self.queue.get()
-        taxi_trip_dataframe = self.readCsv(fileName, raiseException)
+        fileName, raiseException, result = self.queue.get()
+        taxi_trip_dataframe = self.read_csv(fileName, raiseException)
         if taxi_trip_dataframe is not None:
-            payments_type = taxi_trip_dataframe.groupby(['payment_type']).size()
-            most_common_pt = payments_type.idxmax()
-            less_common_pt = payments_type.idxmin()
+            boroughs = taxi_trip_dataframe.groupby(['Borough'])
+            for borough, group in boroughs:
+                payments_type = group.groupby(['payment_type']).size()
+                result.fill_results(payments_type, borough)
         self.queue.task_done()
 
