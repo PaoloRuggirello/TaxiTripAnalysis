@@ -27,6 +27,7 @@ if __name__ == '__main__':
     # print('Less common: ', min(result.result, key=result.result.get))
     print(result.result)
     end = time.time()
+    Utils.saveJsonFile('output-data/result.json', result.result)
     print("Time : ", (end-start))
     #
     # payments_statistics = pd.DataFrame({'Payment Type':[Utils.PAYMENTS_TYPE_DICTIONARY.get(index) for index in payments_type.index], 'Count':payments_type.values})

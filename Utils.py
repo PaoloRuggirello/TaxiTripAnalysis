@@ -64,3 +64,13 @@ def getMonthToAnalyzeFromParser(month):
             print('Error! Month format not recognized.')
             exit()
     return list(range(1, 13))
+
+
+def saveJsonFile(fileName, dumpData, indent=3):
+    try:
+        file = open(fileName, 'w')
+        json.dump(dumpData, file, indent=indent)
+        file.close()
+    except OSError as e:
+        print(e)
+        exit()
