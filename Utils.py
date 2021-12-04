@@ -98,7 +98,7 @@ def add_labels(dictionary):
 
 
 def generateGraph(destPath, borough, data):
-    plt.figure(figsize=[10, 10])
+    plt.figure(figsize=[8, 8])
     data = {k: v for k, v in sorted(data.items(), key=lambda item: item[1])}
     most_common_index = max(data, key=data.get)
     less_common_index = min(data, key=data.get)
@@ -115,6 +115,5 @@ def generateGraph(destPath, borough, data):
     plt.title(borough, fontsize=30)
     plt.xlabel('Payment types')
     plt.ylabel('Number of payments')
-    plt.legend(['In bound payments', 'Most common payment', 'Less Common payment'])
-    plt.savefig(destPath + borough + '.jpg', dpi=300)
-    return plt
+    plt.legend(['Less Common payment', 'In bound payments', 'Most common payment'])
+    plt.savefig(destPath + borough + '.jpg', dpi=200)

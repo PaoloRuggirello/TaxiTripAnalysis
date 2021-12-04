@@ -14,20 +14,27 @@ def startFeatureExtractors():
     queue.join()
 
 
+def generateGraphs():
+    for borough in result.result:
+        Utils.generateGraph(reportPath, borough, result.result[borough])
+
+
 if __name__ == '__main__':
     start = time.time()
+
     args = Utils.initializeParser()
     year = Utils.getYearFromParser(args.year)
     months = Utils.getMonthToAnalyzeFromParser(args.month)
     fileNames = Utils.generateFileNames(year, months)
+
     result = Result()
     startFeatureExtractors()
 
-    end = time.time()
     Utils.generateReportDir()
     reportPath = 'output-data/report ' + Utils.getToday() + '/'
     Utils.saveJsonFile(reportPath + 'result.json', result.result)
-    for borough in result.result:
-        plt = Utils.generateGraph(reportPath, borough, result.result[borough])
+    generateGraphs()
+
+    end = time.time()
     print("Execution time : ", (end-start))
     print("You can find the generated report here: " + reportPath)
