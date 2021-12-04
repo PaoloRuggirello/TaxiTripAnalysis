@@ -1,5 +1,5 @@
-import Utils
 import time
+import Utils
 from queue import Queue
 from FeatureExtractor import FeatureExtractor
 from Result import Result
@@ -23,13 +23,11 @@ if __name__ == '__main__':
     result = Result()
     startFeatureExtractors()
 
-    # print('Most common: ', max(result.result, key=result.result.get))
-    # print('Less common: ', min(result.result, key=result.result.get))
-    print(result.result)
     end = time.time()
-    Utils.saveJsonFile('output-data/result.json', result.result)
-    print("Time : ", (end-start))
-    #
-    # payments_statistics = pd.DataFrame({'Payment Type':[Utils.PAYMENTS_TYPE_DICTIONARY.get(index) for index in payments_type.index], 'Count':payments_type.values})
-    # print(payments_statistics.hist(bins=6))
-    print('Hello world')
+    Utils.generateReportDir()
+    reportPath = 'output-data/report ' + Utils.getToday() + '/'
+    Utils.saveJsonFile(reportPath + 'result.json', result.result)
+    for borough in result.result:
+        plt = Utils.generateGraph(reportPath, borough, result.result[borough])
+    print("Execution time : ", (end-start))
+    print("You can find the generated report here: " + reportPath)
