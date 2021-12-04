@@ -22,12 +22,14 @@ class FeatureExtractor(Thread):
                 return None
 
     def run(self):
-        fileName, raiseException, result = self.queue.get()
+        fileName, borough, raiseException, result = self.queue.get()
         taxi_trip_dataframe = self.read_csv(fileName, raiseException)
         if taxi_trip_dataframe is not None:
+            if borough is not None:
+                taxi_trip_dataframe = taxi_trip_dataframe[taxi_trip_dataframe['Borough'] == borough]
             boroughs = taxi_trip_dataframe.groupby(['Borough'])
-            for borough, group in boroughs:
+            for key, group in boroughs:
                 payments_type = group.groupby(['payment_type']).size()
-                result.fill_results(payments_type, borough)
+                result.fill_results(payments_type, key)
         self.queue.task_done()
 

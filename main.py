@@ -5,12 +5,12 @@ from FeatureExtractor import FeatureExtractor
 from Result import Result
 
 
-def startFeatureExtractors(finalResult):
+def startFeatureExtractors():
     queue = Queue()
     for fileName in fileNames:
         extractor = FeatureExtractor(queue)
         extractor.start()
-        queue.put((fileName, args.month is not None, finalResult))
+        queue.put((fileName, args.borough, args.month is not None, result))
     queue.join()
 
 
@@ -21,7 +21,7 @@ if __name__ == '__main__':
     months = Utils.getMonthToAnalyzeFromParser(args.month)
     fileNames = Utils.generateFileNames(year, months)
     result = Result()
-    startFeatureExtractors(result)
+    startFeatureExtractors()
 
     # print('Most common: ', max(result.result, key=result.result.get))
     # print('Less common: ', min(result.result, key=result.result.get))
