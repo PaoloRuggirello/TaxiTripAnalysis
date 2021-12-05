@@ -1,7 +1,6 @@
 import json
 import argparse
 from datetime import datetime
-import matplotlib.pyplot as plt
 import os
 
 PAYMENTS_TYPE_DICTIONARY = {
@@ -41,7 +40,7 @@ def initialize_parser():
 
 def get_today():
     now = datetime.now()
-    return now.strftime("%d-%m-%Y %H:%M")
+    return now.strftime("%d-%m-%Y_%H:%M")
 
 
 def get_year_from_parser(year):
@@ -57,7 +56,11 @@ def generate_file_names(year, months):
 
 
 def generate_report_dir(output_path):
-    os.makedirs(f'{output_path}/report ' + get_today(), exist_ok=True)
+    report_output_path = f'{output_path}/report_' + get_today()
+    subdir_output_path = f'{report_output_path}/graphs'
+    # creating main output dir and graphs subdir
+    os.makedirs(f'{subdir_output_path}', exist_ok=True)
+    return report_output_path, subdir_output_path
 
 
 def get_month_to_analyze_from_parser(months):
@@ -91,30 +94,8 @@ def save_json_file(file_name, dump_data, indent=3):
         exit()
 
 
-def add_labels(dictionary):
+def add_labels(dictionary, ax):
     i = 0
     for label in dictionary:
-        plt.text(i, dictionary[label], dictionary[label], ha='center')
+        ax.text(i, dictionary[label], dictionary[label], ha='center')
         i += 1
-
-
-def generate_graph(dest_path, borough, data):
-    plt.figure(figsize=[8, 8])
-    data = {k: v for k, v in sorted(data.items(), key=lambda item: item[1])}
-    most_common_index = max(data, key=data.get)
-    less_common_index = min(data, key=data.get)
-
-    add_labels(data)
-    most_common = {most_common_index: data[most_common_index]}
-    less_common = {less_common_index: data[less_common_index]}
-    del data[most_common_index]
-    del data[less_common_index]
-
-    plt.bar(less_common.keys(), less_common.values(), color='red')
-    plt.bar(data.keys(), data.values())
-    plt.bar(most_common.keys(), most_common.values(), color='green')
-    plt.title(borough, fontsize=30)
-    plt.xlabel('Payment types')
-    plt.ylabel('Number of payments')
-    plt.legend(['Less Common payment', 'In bound payments', 'Most common payment'])
-    plt.savefig(dest_path + borough + '.jpg', dpi=200)
