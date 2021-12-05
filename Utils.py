@@ -19,12 +19,22 @@ def initialize_parser():
     parser.add_argument("year",
                         help="The year of which you wants to obtain the analysis",
                         type=str)
-    parser.add_argument("-m", "--month",
-                        help="The month of which you wants to obtain the analysis. Month must be expressed as number "
-                             "or in english.",
-                        type=str)
+    parser.add_argument("-m", "--months",
+                        help="The months of which you wants to obtain the analysis. Months must be expressed as list"
+                             " of number or in english.",
+                        type=str,
+                        nargs='+')
+    # 1+ months can be passed
     parser.add_argument("-b", "--borough",
                         help="The zone of which you wants to obtain the analysis",
+                        type=str)
+    parser.add_argument("-i", "--input",
+                        help="The input directory where .csv files are stored",
+                        default='./source-data',
+                        type=str)
+    parser.add_argument("-o", "--output",
+                        help="The output directory where .json files and graphs will be stored.",
+                        default='./output-data',
                         type=str)
     return parser.parse_args()
 
@@ -46,28 +56,29 @@ def generate_file_names(year, months):
     return ['yellow_tripdata_' + str(year).zfill(4) + '-' + str(m).zfill(2) + '.csv' for m in months]
 
 
-def generate_report_dir():
-    try:
-        os.mkdir('output-data/report ' + get_today())
-    except FileExistsError:
-        print('INFO - Given folder already exists')
+def generate_report_dir(output_path):
+    os.makedirs(f'{output_path}/report ' + get_today(), exist_ok=True)
 
 
-def get_month_to_analyze_from_parser(month):
-    if month is not None:
+def get_month_to_analyze_from_parser(months):
+    if months is not None:
         try:
-            string_size = len(month)
-            if string_size < 3:
-                month = datetime.strptime(month, '%m').month
-            elif string_size == 3:
-                month = datetime.strptime(month, '%b').month
-            else:
-                month = datetime.strptime(month, '%B').month
-            return [month]
+            return [extract_month_num(month) for month in months]
         except Exception as e:
             print(f'Error! Month format not recognized. Error message: {e}')
             exit()
     return list(range(1, 13))
+
+
+def extract_month_num(month):
+    string_size = len(month)
+    if string_size < 3:
+        month = datetime.strptime(month, '%m').month
+    elif string_size == 3:
+        month = datetime.strptime(month, '%b').month
+    else:
+        month = datetime.strptime(month, '%B').month
+    return month
 
 
 def save_json_file(file_name, dump_data, indent=3):

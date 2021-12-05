@@ -3,6 +3,7 @@ import pandas as pd
 
 
 class FeatureExtractor(Thread):
+    source_data_path = ""
 
     def __init__(self, queue):
         Thread.__init__(self)
@@ -11,10 +12,10 @@ class FeatureExtractor(Thread):
     @staticmethod
     def read_csv(file_name, raise_exception):
         try:
-            yellow_taxi_tripdata = pd.read_csv('source-data/' + file_name, usecols=['payment_type', 'DOLocationID'])
-            # TODO: manage possible dynamic file location and name
-            lookup_table = pd.read_csv('source-data/taxi+_zone_lookup.csv', usecols=['LocationID',
-                                                                                     'Borough'])
+            yellow_taxi_tripdata = pd.read_csv(f'{FeatureExtractor.source_data_path}/{file_name}',
+                                               usecols=['payment_type', 'DOLocationID'])
+            lookup_table = pd.read_csv(f'{FeatureExtractor.source_data_path}/taxi+_zone_lookup.csv',
+                                       usecols=['LocationID', 'Borough'])
             return pd.merge(yellow_taxi_tripdata, lookup_table, left_on='DOLocationID', right_on='LocationID')
         except Exception as e:
             if raise_exception:
@@ -34,4 +35,3 @@ class FeatureExtractor(Thread):
                 payments_type = group.groupby(['payment_type']).size()
                 result.fill_results(payments_type, key)
         self.queue.task_done()
-
