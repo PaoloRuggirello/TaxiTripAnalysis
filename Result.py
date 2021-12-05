@@ -1,4 +1,4 @@
-from Utils import PAYMENTS_TYPE_DICTIONARY as payment_type
+from Utils import PAYMENTS_TYPE_DICTIONARY as PAYMENT_TYPE
 
 
 class Result:
@@ -11,10 +11,10 @@ class Result:
             self.result[borough] = {}
         return self.result[borough]
 
-    def fill_results(self, threadResults, borough):
-        for threadResult in threadResults.iteritems():
-            boroughResult = self.get_borough(borough)
-            if payment_type[threadResult[0]] in boroughResult:
-                boroughResult[payment_type[threadResult[0]]] = boroughResult[payment_type[threadResult[0]]] + threadResult[1]
+    def fill_results(self, thread_results, borough):
+        for thread_result in thread_results.iteritems():
+            borough_result = self.get_borough(borough)
+            if PAYMENT_TYPE[thread_result[0]] in borough_result:
+                borough_result[PAYMENT_TYPE[thread_result[0]]] += thread_result[1]
             else:
-                boroughResult[payment_type[threadResult[0]]] = threadResult[1]
+                borough_result[PAYMENT_TYPE[thread_result[0]]] = thread_result[1]

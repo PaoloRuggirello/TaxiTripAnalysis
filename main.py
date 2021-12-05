@@ -5,7 +5,7 @@ from FeatureExtractor import FeatureExtractor
 from Result import Result
 
 
-def startFeatureExtractors():
+def start_feature_extractors():
     queue = Queue()
     for fileName in fileNames:
         extractor = FeatureExtractor(queue)
@@ -14,26 +14,27 @@ def startFeatureExtractors():
     queue.join()
 
 
-def generateGraphs():
+def generate_graphs():
     for borough in result.result:
-        Utils.generateGraph(reportPath, borough, result.result[borough])
+        Utils.generate_graph(reportPath, borough, result.result[borough])
 
 
 if __name__ == '__main__':
     start = time.time()
 
-    args = Utils.initializeParser()
-    year = Utils.getYearFromParser(args.year)
-    months = Utils.getMonthToAnalyzeFromParser(args.month)
-    fileNames = Utils.generateFileNames(year, months)
+    args = Utils.initialize_parser()
+    year = Utils.get_year_from_parser(args.year)
+    # TODO manage list of months
+    months = Utils.get_month_to_analyze_from_parser(args.month)
+    fileNames = Utils.generate_file_names(year, months)
 
     result = Result()
-    startFeatureExtractors()
+    start_feature_extractors()
 
-    Utils.generateReportDir()
-    reportPath = 'output-data/report ' + Utils.getToday() + '/'
-    Utils.saveJsonFile(reportPath + 'result.json', result.result)
-    generateGraphs()
+    Utils.generate_report_dir()
+    reportPath = 'output-data/report ' + Utils.get_today() + '/'
+    Utils.save_json_file(reportPath + 'result.json', result.result)
+    generate_graphs()
 
     end = time.time()
     print("Execution time : ", (end-start))
