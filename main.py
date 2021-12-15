@@ -1,6 +1,7 @@
 import datetime
 import time
 import Utils
+import matplotlib.pyplot as plt
 from queue import Queue
 from FeatureExtractor import FeatureExtractor
 from GraphDrawer import GraphDrawer
@@ -21,7 +22,9 @@ def generate_graphs(output_path):
     queue_graphs = Queue()
     GraphDrawer.output_data_path = output_path
     for borough in result.result:
-        drawer = GraphDrawer(queue_graphs)
+        # .subplots permits to draw graphs using threads
+        fig, ax = plt.subplots()
+        drawer = GraphDrawer(queue_graphs, fig, ax)
         drawer.start()
         queue_graphs.put((borough, result.result[borough]))
     queue_graphs.join()
