@@ -2,6 +2,9 @@ from threading import Thread
 import Utils
 
 
+"""
+    This is the drawer thread.
+"""
 class GraphDrawer(Thread):
     output_data_path = ""
 

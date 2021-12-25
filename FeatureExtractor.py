@@ -9,6 +9,10 @@ class FeatureExtractor(Thread):
         Thread.__init__(self)
         self.queue = queue
 
+    """
+        @file_name: the name of the file that should be read
+        @raise_exception: if true means that the file must be present, otherwise throw and exception
+    """
     @staticmethod
     def read_csv(file_name, raise_exception):
         try:
@@ -24,11 +28,14 @@ class FeatureExtractor(Thread):
             else:
                 return None
 
+    """
+        The run is used to perform the analysis.
+    """
     def run(self):
         file_name, borough, raise_exception, result = self.queue.get()
         taxi_trip_dataframe = self.read_csv(file_name, raise_exception)
         if taxi_trip_dataframe is not None:
-            if borough is not None:
+            if borough is not None:  # Keeps only the borough specified by user
                 taxi_trip_dataframe = taxi_trip_dataframe[taxi_trip_dataframe['Borough'] == borough]
             boroughs = taxi_trip_dataframe.groupby(['Borough'])
             for key, group in boroughs:

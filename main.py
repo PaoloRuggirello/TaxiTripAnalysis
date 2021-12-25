@@ -8,7 +8,7 @@ from GraphDrawer import GraphDrawer
 from Result import Result
 
 
-def start_feature_extractors(source_data):
+def start_feature_extractors(source_data):  # Starting threads to perform analysis
     queue_extractor = Queue()
     FeatureExtractor.source_data_path = source_data
     for fileName in fileNames:
@@ -18,11 +18,11 @@ def start_feature_extractors(source_data):
     queue_extractor.join()
 
 
-def generate_graphs(output_path):
+def generate_graphs(output_path):  # Starting threads to generate graphs
     queue_graphs = Queue()
     GraphDrawer.output_data_path = output_path
     for borough in result.result:
-        # .subplots permits to draw graphs using threads
+        # .subplots permits drawing graphs using threads
         fig, ax = plt.subplots()
         drawer = GraphDrawer(queue_graphs, fig, ax)
         drawer.start()
@@ -30,6 +30,15 @@ def generate_graphs(output_path):
     queue_graphs.join()
 
 
+"""
+    Main execution. This code performs following actions: 
+     - Initialize the parser
+     - Extract user's specification in order to perform the correct analysis
+     - Generate the list of files that should be analyzed
+     - Perform analysis (with thread)
+     - Generate report in a json file
+     - Print graph (with thread)
+"""
 if __name__ == '__main__':
     start = time.time()
     print(f"Starting TaxiTripAnalysis at: {datetime.datetime.fromtimestamp(start)}\n")

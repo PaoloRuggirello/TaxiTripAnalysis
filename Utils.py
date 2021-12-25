@@ -75,11 +75,11 @@ def get_month_to_analyze_from_parser(months):
 
 def extract_month_num(month):
     string_size = len(month)
-    if string_size < 3:
+    if string_size < 3:  # Convert numbers in month
         month = datetime.strptime(month, '%m').month
-    elif string_size == 3:
+    elif string_size == 3:  # Convert small string in numbers es. jan, feb, mar ecc.
         month = datetime.strptime(month, '%b').month
-    else:
+    else:  # Convert string to month es january, february, march ecc.
         month = datetime.strptime(month, '%B').month
     return month
 
@@ -94,6 +94,9 @@ def save_json_file(file_name, dump_data, indent=3):
         exit()
 
 
+"""
+    This method set the number of payments up to the corresponding payment method.
+"""
 def add_labels(dictionary, ax):
     i = 0
     for label in dictionary:
