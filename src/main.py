@@ -8,9 +8,10 @@ from GraphDrawer import GraphDrawer
 from Result import Result
 
 
-def start_feature_extractors(source_data):  # Starting threads to perform analysis
+def start_feature_extractors(source_data, year_data):  # Starting threads to perform analysis
     queue_extractor = Queue()
     FeatureExtractor.source_data_path = source_data
+    FeatureExtractor.year_data_path = year_data
     for fileName in fileNames:
         extractor = FeatureExtractor(queue_extractor)
         extractor.start()
@@ -51,7 +52,7 @@ if __name__ == '__main__':
     fileNames = Utils.generate_file_names(year, months)
 
     result = Result()
-    start_feature_extractors(args.input)
+    start_feature_extractors(args.input, args.year)
 
     reportPath, graphPath = Utils.generate_report_dir(args.output)
     Utils.save_json_file(f'{reportPath}/result.json', result.result)

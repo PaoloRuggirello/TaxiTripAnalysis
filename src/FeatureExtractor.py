@@ -3,7 +3,8 @@ import pandas as pd
 
 
 class FeatureExtractor(Thread):
-    source_data_path = ""
+    source_data_path = None
+    year_data_path = None
 
     def __init__(self, queue):
         Thread.__init__(self)
@@ -16,8 +17,8 @@ class FeatureExtractor(Thread):
             @raise_exception: if true means that the file must be present, otherwise throw and exception
         """
         try:
-            yellow_taxi_tripdata = pd.read_csv(f'{FeatureExtractor.source_data_path}/{file_name}',
-                                               usecols=['payment_type', 'DOLocationID'])
+            yellow_taxi_tripdata = pd.read_csv(f'{FeatureExtractor.source_data_path}/{FeatureExtractor.year_data_path}'
+                                               f'/{file_name}', usecols=['payment_type', 'DOLocationID'])
             lookup_table = pd.read_csv(f'{FeatureExtractor.source_data_path}/taxi+_zone_lookup.csv',
                                        usecols=['LocationID', 'Borough'])
             return pd.merge(yellow_taxi_tripdata, lookup_table, left_on='DOLocationID', right_on='LocationID')

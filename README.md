@@ -5,13 +5,15 @@ Code written by:
 
 
 ### Project Structure
-output-data -> contains the report's result.
-source-data -> contains file used to obtain the report
+output-data -> contains the report's result.\
+source-data -> contains file used to obtain the report.\
 main.py -> contains the main script to execute
 
 ### Before execution
 Put dataset and lookup tables inside the source-data folder!
-Otherwise, if you have sorce-files in another directory you can specify the path with -i option.
+Otherwise, if you have source-files in another directory you can specify the path with -i option. \
+The files must be collected based on the year in subdirectories. Each subdirectory has to be named with the year expressed
+with the format YYYY.
 
 ### Execution
 To execute the script the [year] field is mandatory.\
