@@ -14,7 +14,17 @@ You can download source files from: https://www1.nyc.gov/site/tlc/about/tlc-trip
 Put dataset and lookup tables inside the source-data folder!
 Otherwise, if you have source-files in another directory you can specify the path with -i option. \
 The files must be collected based on the year in subdirectories. Each subdirectory has to be named with the year expressed
-with the format YYYY.
+with the format YYYY. \
+#### Example of structure: 
+source-data: \
+| &nbsp;&nbsp; taxi+_zone_lookup.csv \
+| &nbsp;&nbsp; 2020: \
+| &nbsp;&nbsp; | &nbsp;&nbsp; yellow_tripdata_2020-09.csv \
+| &nbsp;&nbsp; | &nbsp;&nbsp; yellow_tripdata_2020-10.csv \
+| &nbsp;&nbsp; 2021: \
+| &nbsp;&nbsp; | &nbsp;&nbsp; yellow_tripdata_2020-01.csv \
+| &nbsp;&nbsp; | &nbsp;&nbsp; yellow_tripdata_2020-02.csv \
+######This structure must be exist also in the custom path specified with -i otion 
 
 ### Execution
 To execute the script the [year] field is mandatory.\
