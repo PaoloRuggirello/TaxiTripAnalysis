@@ -1,5 +1,5 @@
 from threading import Thread
-import Utils
+import src.Utils as Utils
 
 
 class GraphDrawer(Thread):

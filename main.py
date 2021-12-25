@@ -1,11 +1,11 @@
 import datetime
 import time
-import Utils
+import src.Utils as Utils
 import matplotlib.pyplot as plt
 from queue import Queue
-from FeatureExtractor import FeatureExtractor
-from GraphDrawer import GraphDrawer
-from Result import Result
+from src.FeatureExtractor import FeatureExtractor
+from src.GraphDrawer import GraphDrawer
+from src.Result import Result
 
 
 def start_feature_extractors(source_data, year_data):  # Starting threads to perform analysis

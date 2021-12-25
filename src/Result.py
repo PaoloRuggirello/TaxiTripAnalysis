@@ -1,4 +1,4 @@
-from Utils import PAYMENTS_TYPE_DICTIONARY as PAYMENT_TYPE
+from src.Utils import PAYMENTS_TYPE_DICTIONARY as PAYMENT_TYPE
 from threading import Lock
 
 

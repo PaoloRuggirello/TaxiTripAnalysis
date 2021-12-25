@@ -1,3 +1,4 @@
+import os
 from threading import Thread
 import pandas as pd
 
@@ -25,7 +26,7 @@ class FeatureExtractor(Thread):
         except Exception as e:
             if raise_exception:
                 print(f'Data-source not found for given dates. Error message: {e}')
-                exit()
+                os._exit
             else:
                 return None
 
