@@ -10,6 +10,7 @@ source-data -> contains file used to obtain the report.\
 main.py -> contains the main script to execute
 
 ### Before execution
+You can download source files from: https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page \
 Put dataset and lookup tables inside the source-data folder!
 Otherwise, if you have source-files in another directory you can specify the path with -i option. \
 The files must be collected based on the year in subdirectories. Each subdirectory has to be named with the year expressed
