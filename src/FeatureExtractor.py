@@ -12,10 +12,11 @@ class FeatureExtractor(Thread):
         self.queue = queue
 
     @staticmethod
-    def read_csv(file_name, raise_exception):
+    def read_csv(file_name, raise_exception, result):
         """
             @file_name: the name of the file that should be read
             @raise_exception: if true means that the file must be present, otherwise throw and exception
+            @result: used to communicate error during execution
         """
         try:
             yellow_taxi_tripdata = pd.read_csv(f'{FeatureExtractor.source_data_path}/{FeatureExtractor.year_data_path}'
@@ -26,6 +27,7 @@ class FeatureExtractor(Thread):
         except Exception as e:
             if raise_exception:
                 print(f'Data-source not found for given dates. Error message: {e}')
+                result.error_during_execution()
                 os._exit
             else:
                 return None
@@ -35,7 +37,7 @@ class FeatureExtractor(Thread):
             The run is used to perform the analysis.
         """
         file_name, borough, raise_exception, result = self.queue.get()
-        taxi_trip_dataframe = self.read_csv(file_name, raise_exception)
+        taxi_trip_dataframe = self.read_csv(file_name, raise_exception, result)
         if taxi_trip_dataframe is not None:
             if borough is not None:  # Keeps only the borough specified by user
                 taxi_trip_dataframe = taxi_trip_dataframe[taxi_trip_dataframe['Borough'] == borough]

@@ -54,12 +54,15 @@ if __name__ == '__main__':
     result = Result()
     start_feature_extractors(args.input, args.year)
 
-    reportPath, graphPath = Utils.generate_report_dir(args.output)
-    Utils.save_json_file(f'{reportPath}/result.json', result.result)
-    generate_graphs(f'{graphPath}/')
+    if not result.error_during_thread_execution:
+        reportPath, graphPath = Utils.generate_report_dir(args.output)
+        Utils.save_json_file(f'{reportPath}/result.json', result.result)
+        generate_graphs(f'{graphPath}/')
 
-    end = time.time()
-    print(f"Ended TaxiTripAnalysis at: {datetime.datetime.fromtimestamp(end)}")
-    print(f"Execution time : {end-start} s\n")
-    print(f"You can find the generated report here: {reportPath}")
-    print(f"and graphs in the subdirectory: {graphPath}")
+        end = time.time()
+        print(f"Ended TaxiTripAnalysis at: {datetime.datetime.fromtimestamp(end)}")
+        print(f"Execution time : {end-start} s\n")
+        print(f"You can find the generated report here: {reportPath}")
+        print(f"and graphs in the subdirectory: {graphPath}")
+    else:
+        print("Process exited with error. Failed to generate reports.")
