@@ -94,10 +94,10 @@ def save_json_file(file_name, dump_data, indent=3):
         exit()
 
 
-"""
-    This method set the number of payments up to the corresponding payment method.
-"""
 def add_labels(dictionary, ax):
+    """
+        This method set the number of payments up to the corresponding payment method.
+    """
     i = 0
     for label in dictionary:
         ax.text(i, dictionary[label], dictionary[label], ha='center')

@@ -30,16 +30,16 @@ def generate_graphs(output_path):  # Starting threads to generate graphs
     queue_graphs.join()
 
 
-"""
-    Main execution. This code performs following actions: 
-     - Initialize the parser
-     - Extract user's specification in order to perform the correct analysis
-     - Generate the list of files that should be analyzed
-     - Perform analysis (with thread)
-     - Generate report in a json file
-     - Print graph (with thread)
-"""
 if __name__ == '__main__':
+    """
+        Main execution. This code performs following actions: 
+         - Initialize the parser
+         - Extract user's specification in order to perform the correct analysis
+         - Generate the list of files that should be analyzed
+         - Perform analysis (with thread)
+         - Generate report in a json file
+         - Print graph (with thread)
+    """
     start = time.time()
     print(f"Starting TaxiTripAnalysis at: {datetime.datetime.fromtimestamp(start)}\n")
 

@@ -2,10 +2,10 @@ from Utils import PAYMENTS_TYPE_DICTIONARY as PAYMENT_TYPE
 from threading import Lock
 
 
-"""
-This class is used to join results from threads.
-"""
 class Result:
+    """
+    This class is used to join results from threads.
+    """
 
     def __init__(self):
         self.result = {}

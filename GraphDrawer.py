@@ -2,10 +2,10 @@ from threading import Thread
 import Utils
 
 
-"""
-    This is the drawer thread.
-"""
 class GraphDrawer(Thread):
+    """
+        This is the drawer thread.
+    """
     output_data_path = ""
 
     def __init__(self, queue, fig, ax):

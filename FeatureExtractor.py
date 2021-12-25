@@ -9,12 +9,12 @@ class FeatureExtractor(Thread):
         Thread.__init__(self)
         self.queue = queue
 
-    """
-        @file_name: the name of the file that should be read
-        @raise_exception: if true means that the file must be present, otherwise throw and exception
-    """
     @staticmethod
     def read_csv(file_name, raise_exception):
+        """
+            @file_name: the name of the file that should be read
+            @raise_exception: if true means that the file must be present, otherwise throw and exception
+        """
         try:
             yellow_taxi_tripdata = pd.read_csv(f'{FeatureExtractor.source_data_path}/{file_name}',
                                                usecols=['payment_type', 'DOLocationID'])
@@ -28,10 +28,10 @@ class FeatureExtractor(Thread):
             else:
                 return None
 
-    """
-        The run is used to perform the analysis.
-    """
     def run(self):
+        """
+            The run is used to perform the analysis.
+        """
         file_name, borough, raise_exception, result = self.queue.get()
         taxi_trip_dataframe = self.read_csv(file_name, raise_exception)
         if taxi_trip_dataframe is not None:
