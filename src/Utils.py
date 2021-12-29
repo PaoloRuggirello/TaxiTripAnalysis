@@ -94,6 +94,16 @@ def save_json_file(file_name, dump_data, indent=3):
         exit()
 
 
+def save_text_file(file_name, lines):
+    try:
+        file = open(file_name, 'w')
+        file.writelines(lines)
+        file.close()
+    except OSError as e:
+        print(e)
+        exit()
+
+
 def add_labels(dictionary, ax):
     """
         This method set the number of payments up to the corresponding payment method.
@@ -102,3 +112,25 @@ def add_labels(dictionary, ax):
     for label in dictionary:
         ax.text(i, dictionary[label], dictionary[label], ha='center')
         i += 1
+
+
+def get_summary_of_analysis(args, year_got, file_names_analyzed, start, end) -> list:
+    """
+        This method returns a list of text rows that summarizes the analysis done
+    """
+    return [
+        'PARAMETERS INSERTED BY USER\n',
+        f'Input_directory: {args.input}\n',
+        f'Output_directory: {args.output}\n',
+        f'Year: {args.year}\n',
+        f"Months: {args.months if args.months is not None else 'all'}\n",
+        f"Borough: {args.borough if args.borough is not None else 'all'}\n\n\n",
+        'ACTUAL ANALYSIS WAS PERFORMED ON\n'
+        f'Taxi data subdirectory: {args.input}/{year_got}/\n',
+        f"Files analyzed: {file_names_analyzed}\n\n",
+        f"Boroughs' info: {args.input}/taxi+_zone_lookup.csv\n\n\n",
+        'METRICS OF ANALYSIS\n',
+        f'Start datetime: {datetime.fromtimestamp(start)}\n',
+        f'End datetime: {datetime.fromtimestamp(end)}\n',
+        f"Execution time : {end - start} s"
+    ]

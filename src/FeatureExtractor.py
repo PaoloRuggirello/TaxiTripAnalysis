@@ -23,21 +23,21 @@ class FeatureExtractor(Thread):
                                                f'/{file_name}', usecols=['payment_type', 'DOLocationID'])
             lookup_table = pd.read_csv(f'{FeatureExtractor.source_data_path}/taxi+_zone_lookup.csv',
                                        usecols=['LocationID', 'Borough'])
-            return pd.merge(yellow_taxi_tripdata, lookup_table, left_on='DOLocationID', right_on='LocationID')
+            return pd.merge(yellow_taxi_tripdata, lookup_table, left_on='DOLocationID', right_on='LocationID'), file_name
         except Exception as e:
             if raise_exception:
                 print(f'Data-source not found for given dates. Error message: {e}')
                 result.error_during_execution()
                 os._exit
             else:
-                return None
+                return None, None
 
     def run(self):
         """
             The run is used to perform the analysis.
         """
         file_name, borough, raise_exception, result = self.queue.get()
-        taxi_trip_dataframe = self.read_csv(file_name, raise_exception, result)
+        taxi_trip_dataframe, file_name = self.read_csv(file_name, raise_exception, result)
         if taxi_trip_dataframe is not None:
             if borough is not None:  # Keeps only the borough specified by user
                 taxi_trip_dataframe = taxi_trip_dataframe[taxi_trip_dataframe['Borough'] == borough]
@@ -45,4 +45,5 @@ class FeatureExtractor(Thread):
             for key, group in boroughs:
                 payments_type = group.groupby(['payment_type']).size()
                 result.fill_results(payments_type, key)
+            result.add_file_name(file_name)
         self.queue.task_done()

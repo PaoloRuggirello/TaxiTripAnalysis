@@ -60,6 +60,8 @@ if __name__ == '__main__':
         generate_graphs(f'{graphPath}/')
 
         end = time.time()
+        lines_summary = Utils.get_summary_of_analysis(args, year, result.file_names_analyzed, start, end)
+        Utils.save_text_file(f'{reportPath}/summary.txt', lines_summary)
         print(f"Ended TaxiTripAnalysis at: {datetime.datetime.fromtimestamp(end)}")
         print(f"Execution time : {end-start} s\n")
         print(f"You can find the generated report here: {reportPath}")
