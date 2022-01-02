@@ -114,7 +114,7 @@ def add_labels(dictionary, ax):
         i += 1
 
 
-def get_summary_of_analysis(args, year_got, file_names_analyzed, start, end) -> list:
+def get_summary_of_analysis(args, year_got, file_names_analyzed, analyzed_boroughs, start, end) -> list:
     """
         This method returns a list of text rows that summarizes the analysis done
     """
@@ -122,13 +122,14 @@ def get_summary_of_analysis(args, year_got, file_names_analyzed, start, end) -> 
         'PARAMETERS INSERTED BY USER\n',
         f'Input_directory: {args.input}\n',
         f'Output_directory: {args.output}\n',
+        f"Boroughs' info: {args.input}/taxi+_zone_lookup.csv\n",
         f'Year: {args.year}\n',
         f"Months: {args.months if args.months is not None else 'all'}\n",
         f"Borough: {args.borough if args.borough is not None else 'all'}\n\n\n",
         'ACTUAL ANALYSIS WAS PERFORMED ON\n'
         f'Taxi data subdirectory: {args.input}/{year_got}/\n',
-        f"Files analyzed: {file_names_analyzed}\n\n",
-        f"Boroughs' info: {args.input}/taxi+_zone_lookup.csv\n\n\n",
+        f"Files analyzed: {file_names_analyzed}\n",
+        f"Boroughs analyzed: {analyzed_boroughs}\n\n\n"
         'METRICS OF ANALYSIS\n',
         f'Start datetime: {datetime.fromtimestamp(start)}\n',
         f'End datetime: {datetime.fromtimestamp(end)}\n',

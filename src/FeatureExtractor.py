@@ -28,9 +28,7 @@ class FeatureExtractor(Thread):
             if raise_exception:
                 print(f'Data-source not found for given dates. Error message: {e}')
                 result.error_during_execution()
-                os._exit
-            else:
-                return None, None
+            return None, None
 
     def run(self):
         """
